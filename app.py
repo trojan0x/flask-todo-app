@@ -4,7 +4,9 @@ from django.shortcuts import redirect
 from flask import Flask, render_template
 import os
 from flask_sqlalchemy import SQLAlchemy
+from git import Commit
 from httpx import request
+from pytest import Session
 
 
 app = Flask(__name__)
@@ -47,6 +49,22 @@ def delete(id):
     
     except:
         "An error occured while trying to delete task..."
+@app.route("/update/<int:id>")
+def update(id):
+    task =Todo.query.get_or_404(id)
+    if request.method == "POST":
+        task.content = request.form['content']
+
+        try: 
+            db.Session.Commit()
+            return redirect("/")
+        except:
+            return "An error occured while trying to update task"
+    
+    else:
+        return render_template("update.html", task=task)
+
+
 
 
 if __name__ == "__main__":
