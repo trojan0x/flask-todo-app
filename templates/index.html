@@ -15,21 +15,22 @@
         <th>Actions</th>
 
     </tr>
-
+    {% for task in tasks %} 
     <tr>
         <td></td>
         <td>
-            <a href="">Delete task</a><br>
+            <a href="delete/{{task.id}}">Delete task</a><br>
             <a href="">Update task</a>
 
 
         </td>
 
     </tr>
+    {% endfor %}
 </table>
 
 <form action="/", method="POST">
     <input type ="text" name="content" id="content">
     <input type="submit" value="Create Task">
-    
+
 </form>

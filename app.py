@@ -1,6 +1,10 @@
+from asyncio import tasks
+from crypt import methods
+from django.shortcuts import redirect
 from flask import Flask, render_template
 import os
 from flask_sqlalchemy import SQLAlchemy
+from httpx import request
 
 
 app = Flask(__name__)
@@ -17,10 +21,32 @@ class Todo(db.Model):
         
 
 
-@app.route("/")
+@app.route("/", methods=['POST', 'GET'])
 
 def index():
-    return render_template("index.html")
+    if request.method=="POST":
+        taskcontent = request.form['content']
+        newtask = Todo(content=taskcontent)
+        try:
+            db.session.add(newtask)
+            db.session.commit()
+            return redirect("/")
+        except:
+            return "Error adding task"
+    
+    else:
+        tasks = Todo.query.all()
+        return render_template("index.html", tasks=tasks)
+@app.route("/delete/<int:id>")
+def delete(id):
+    delete_task = Todo.query.get_or_404(id)
+    try:
+        db.session.delete(delete_task)
+        db.session.commit()
+        return redirect("/")
+    
+    except:
+        "An error occured while trying to delete task..."
 
 
 if __name__ == "__main__":
