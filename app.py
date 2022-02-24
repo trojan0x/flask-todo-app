@@ -26,7 +26,7 @@ class Todo(db.Model):
 @app.route("/", methods=['POST', 'GET'])
 
 def index():
-    if request.method=="POST":
+    if request.method =="POST":
         taskcontent = request.form['content']
         newtask = Todo(content=taskcontent)
         try:
