@@ -2,7 +2,6 @@ from asyncio import tasks
 from crypt import methods
 from django.shortcuts import redirect
 from flask import Flask, render_template
-import os
 from flask_sqlalchemy import SQLAlchemy
 from git import Commit
 from httpx import request
@@ -68,5 +67,5 @@ def update(id):
 
 
 if __name__ == "__main__":
-    port = int(os.environ.get('PORT', 5000))
-    app.run(debug=True, host='127.0.0.1', port=port)
+
+    app.run(debug=True)
